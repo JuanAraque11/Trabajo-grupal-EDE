@@ -1,0 +1,324 @@
+---
+title: "Análisis Exploratorio de Indicadores en el Departamento del Huila"
+author: 
+  - "Juan Jose Echavarria - 1001738872"
+  - "Yeferson Aguilar - 1001687113"
+format:
+  html:
+    toc: true              # Tabla de contenido útil para navegar el informe
+    number-sections: true # Numera secciones (da estructura)
+    theme: cosmo          # Tema visual agradable y limpio
+    
+editor: visual
+knitr:
+  opts_chunk:
+    echo: false             # Oculta el código por defecto
+    message: false          # Oculta mensajes como los de lectura de shapefile
+    warning: false          # Oculta advertencias
+---
+
+## Objetivos del trabajo
+
+El presente trabajo tiene como objetivo principal describir y visualizar los principales indicadores sociales del departamento del Huila (Colombia), empleando herramientas de análisis espacial y estadístico. Se busca identificar la distribución territorial del Índice de Pobreza Multidimensional (IPM), las Necesidades Básicas Insatisfechas (NBI), y la distancia geográfica de cada municipio respecto a la capital departamental, Neiva. Asimismo, se pretende fortalecer la comprensión de las desigualdades regionales a través de visualizaciones interactivas.
+
+------------------------------------------------------------------------
+
+## Introducción
+
+El análisis de indicadores sociales es una herramienta fundamental para comprender las condiciones de vida de la población y orientar decisiones en políticas públicas. Entre estos indicadores, el Índice de Pobreza Multidimensional (IPM) y las Necesidades Básicas Insatisfechas (NBI) permiten identificar carencias estructurales en aspectos clave como educación, salud, vivienda y servicios públicos.
+
+Este trabajo se centra en el departamento del Huila, una región del sur de Colombia que presenta contrastes importantes en su desarrollo social entre municipios. Mediante el uso de datos geográficos y estadísticas sociales, se busca explorar cómo varían estos indicadores dentro del departamento y qué patrones territoriales se evidencian. La elección del Huila responde tanto a su diversidad geográfica como a la disponibilidad de datos recientes que permiten realizar un análisis actualizado.
+
+El uso de mapas temáticos interactivos y técnicas de visualización facilita la interpretación de los resultados y permite generar conclusiones útiles para la planeación regional y la toma de decisiones.
+
+------------------------------------------------------------------------
+
+## Metodología
+
+Se empleó el lenguaje de programación R como entorno principal de análisis, utilizando paquetes especializados como `tidyverse`, `sf`, `tmap`, `readxl` y `janitor`.\
+
+La información espacial fue tomada del shapefile oficial de municipios de Colombia, publicado por el DANE. Los datos estadísticos provinieron de archivos CSV con indicadores sociales a nivel municipal, correspondientes a los años 2018 (NBI) y 2021 (IPM).
+
+Enlace: <https://geoportal.dane.gov.co/geovisores/sociedad/indicadores-regionales/>
+
+------------------------------------------------------------------------
+
+## Procedimiento
+
+El procedimiento realizado se puede resumir en las siguientes etapas:
+
+1.  **Carga y procesamiento** de los archivos espaciales (`.shp`) con los límites municipales de Colombia.
+2.  **Filtrado del departamento del Huila** y transformación de los datos para facilitar su análisis.
+3.  **Integración de datos socioeconómicos**, emparejando los códigos municipales con los registros de IPM y NBI.
+4.  **Cálculo de distancias geográficas** desde cada municipio hasta Neiva, utilizando proyecciones espaciales precisas.
+5.  **Visualización de los datos** mediante mapas temáticos interactivos, con énfasis en la comparación territorial.
+
+------------------------------------------------------------------------
+
+## Análisis exploratorio de los resultados
+
+### Índice de Pobreza Multidimensional (IPM) 
+
+La visualización del Índice de Pobreza Multidimensional (IPM) en los municipios del Huila permite identificar zonas con mayores niveles de privación. El IPM combina múltiples dimensiones del bienestar —como salud, educación, vivienda y trabajo— para ofrecer una medida más integral de la pobreza.
+
+El mapa interactivo a continuación muestra la distribución del IPM, donde se observa una concentración de valores más altos (mayor pobreza) en municipios periféricos, mientras que la capital, Neiva, presenta los niveles más bajos de privación multidimensional.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# ───────────────
+# Cargar librerías
+# ───────────────
+
+suppressPackageStartupMessages({
+  library(tidyverse)   # Manejo de datos
+  library(sf)          # Datos espaciales
+  library(tmap)        # Mapas temáticos
+  library(readxl)
+  library(janitor)     # Limpieza de nombres
+  library(readr)       # Lectura de CSVs
+  library(dplyr)
+  library(stringr)
+})
+options(tmap.show.messages = FALSE)
+```
+
+### Mapa
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# ───────────────
+# Leer shapefile de municipios de Colombia
+# ───────────────
+shp_path <- file.path("Datos", "MGN_2021_COLOMBIA", "ADMINISTRATIVO", "MGN_MPIO_POLITICO.shp")
+colombia <- st_read(shp_path, quiet = TRUE)
+
+
+# ───────────────
+# Filtrar municipios del Huila
+# ───────────────
+huila <- colombia %>%
+  filter(DPTO_CNMBR == "HUILA") %>%
+  mutate(
+    MPIO_CCDGO = str_pad(as.character(MPIO_CCDGO), width = 3, pad = "0"),
+    cod_municipio = paste0("41", MPIO_CCDGO)
+  )
+
+# ───────────────
+# Leer archivo de IPM por municipio del Huila
+# ───────────────
+ipm_data <- suppressMessages(
+  read_csv(file.path("Datos", "huila_2021.csv"),
+           col_types = cols(ipm = col_character()))
+) %>%
+  clean_names() %>%
+  mutate(
+    clase = str_remove_all(clase, ",")  # 👈 elimina comas
+  ) %>%
+  filter(str_to_lower(clase) == "total") %>%
+  mutate(
+    ipm = str_replace(ipm, ",", "."),
+    ipm = as.numeric(ipm),
+    cod_municipio = as.character(cod_municipio)
+  )
+
+
+
+
+# ───────────────
+# Unir shapefile con datos IPM
+# ───────────────
+huila_ipm <- left_join(huila, ipm_data, by = "cod_municipio")
+
+# ───────────────
+# Activar modo interactivo
+# ───────────────
+tmap_mode("view")
+
+# ───────────────
+# Crear mapa interactivo con popup
+# ───────────────
+tm_shape(huila_ipm) +
+  tm_polygons(
+    col = "ipm",
+    palette = "Reds",
+    id = "MPIO_CNMBR",
+    popup.vars = c("IPM:" = "ipm")
+  ) +
+  tm_view(set.view = c(-75.6, 2.6, 8))  # ¡Usa set.view para tmap v3!
+
+```
+
+----------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------
+
+### El Índice de Necesidades Básicas Insatisfechas (NBI)
+
+El indicador de Necesidades Básicas Insatisfechas (NBI) refleja el porcentaje de la población que carece de condiciones mínimas de vida digna. El análisis espacial revela patrones similares al IPM, aunque con diferencias importantes, ya que NBI enfatiza condiciones materiales como vivienda, hacinamiento, y servicios.
+
+El siguiente mapa detalla los niveles de NBI por municipio, proporcionando una perspectiva complementaria al análisis de pobreza.
+
+### Mapa
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+# ─── Leer shapefile de municipios de Colombia ──────────────────────────────
+shp_path <- file.path("Datos", "MGN_2021_COLOMBIA", "ADMINISTRATIVO", "MGN_MPIO_POLITICO.shp")
+colombia <- st_read(shp_path, quiet = TRUE)
+
+
+# ─── Filtrar municipios del Huila ──────────────────────────────────────────
+huila <- colombia %>%
+  filter(DPTO_CNMBR == "HUILA") %>%
+  mutate(
+    MPIO_CCDGO = str_pad(as.character(MPIO_CCDGO), width = 3, pad = "0"),
+    cod_municipio = paste0("41", MPIO_CCDGO)
+  )
+
+# ─── Leer y limpiar datos NBI ──────────────────────────────────────────────
+nbi_data <- read_csv("Datos/NBI.csv", 
+                     locale = locale(decimal_mark = ","), 
+                     show_col_types = FALSE) %>%
+  clean_names() %>%
+  mutate(
+    clase = str_trim(str_remove(clase, ",")),                     # Limpiar comas
+    cod_municipio = str_pad(as.character(cod_municipio), 5, pad = "0")  # Formato uniforme
+  ) %>%
+  filter(
+    str_to_lower(clase) == "total",   # Solo registros "Total"
+    anio == 2018                      # Solo año 2018
+  )
+
+# ─── Join shapefile con datos NBI ──────────────────────────────────────────
+huila_nbi <- left_join(huila, nbi_data, by = "cod_municipio")
+
+# ─── Crear mapa interactivo con popup ──────────────────────────────────────
+tmap_mode("view")
+
+tm_shape(huila_nbi) +
+  tm_polygons(
+    col = "personas_nbi",               # Puedes cambiar a otra variable
+    palette = "Reds",
+    id = "MPIO_CNMBR",
+    popup.vars = c(
+      "Municipio" = "municipio",
+      "Hacinamiento" = "hacinamiento",
+      "Servicios" = "servicios",
+      "Vivienda" = "vivienda",
+      "Personas NBI" = "personas_nbi",
+      "Inasistencia" = "inasistencia",
+      "Miseria" = "miseria"
+    )
+  ) +
+  tm_view(set.view = c(-75.6, 2.6, 8))  # Centrar vista en Huila
+
+
+
+```
+
+-----------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------
+
+### Distancia geográfica a Neiva
+
+Para evaluar la relación entre aislamiento geográfico y niveles de pobreza, se calcularon las distancias desde cada municipio hasta Neiva, capital del departamento. Se observa que algunos municipios más alejados también tienden a presentar mayores niveles de IPM y NBI, lo que sugiere un posible vínculo entre centralidad geográfica y acceso a oportunidades.
+
+### Mapa
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# ─── Leer shapefile y filtrar Huila ──────────────────────────
+shp_path <- file.path("Datos", "MGN_2021_COLOMBIA", "ADMINISTRATIVO", "MGN_MPIO_POLITICO.shp")
+colombia <- st_read(shp_path, quiet = TRUE)
+
+
+huila <- colombia %>%
+  filter(DPTO_CNMBR == "HUILA") %>%
+  mutate(
+    MPIO_CCDGO = str_pad(as.character(MPIO_CCDGO), 3, pad = "0"),
+    cod_municipio = paste0("41", MPIO_CCDGO)
+  )
+
+# ─── Reproyectar todo al CRS EPSG:3116 ───────────────────────
+huila_proj <- st_transform(huila, crs = 3116)
+
+# ─── Calcular centroides de todos y de Neiva ─────────────────
+huila_proj <- huila_proj %>%
+  mutate(centroide = st_centroid(geometry))
+
+neiva_centroid <- huila_proj %>%
+  filter(MPIO_CNMBR == "NEIVA") %>%
+  pull(centroide)
+
+# ─── Calcular distancias desde cada municipio a Neiva ────────
+huila_dist <- huila_proj %>%
+  mutate(
+    distancia_km = as.numeric(st_distance(centroide, neiva_centroid)) / 1000
+  )
+
+# ─── Revisar distancias (opcional) ───────────────────────────
+#print(huila_dist %>% select(MPIO_CNMBR, distancia_km))
+
+# ─── Mapa interactivo de distancias ───────────────────────────
+tmap_mode("view")
+
+tm_shape(huila_dist) +
+  tm_polygons(
+    col = "distancia_km",
+    palette = "Blues",
+    id = "MPIO_CNMBR",
+    popup.vars = c("Distancia a Neiva (km)" = "distancia_km")
+  ) +
+  tm_view(set.view = c(-75.6, 2.6, 8))
+
+```
+
+## Interpretación de los resultados
+
+El análisis evidencia que los municipios más alejados del centro urbano principal (Neiva) presentan, en general, mayores niveles de pobreza y necesidades insatisfechas. Esto podría estar relacionado con barreras en el acceso a servicios básicos, educación, empleo formal y sistemas de salud.
+
+Los resultados también sugieren que, aunque el IPM y el NBI comparten tendencias espaciales, cada indicador captura dimensiones distintas de la pobreza, lo que refuerza la importancia de utilizarlos de manera complementaria.
+
+## Conclusiones
+
+-   El análisis geoespacial de indicadores sociales como el IPM y el NBI en el departamento del Huila permite identificar patrones territoriales de pobreza y desigualdad.
+
+<!-- -->
+
+-    Municipios periféricos tienden a presentar mayores niveles de privación, lo que sugiere desigualdades en la distribución de servicios y oportunidades.
+
+<!-- -->
+
+-    El uso combinado de datos estadísticos y mapas interactivos facilita una mejor comprensión de la realidad social del territorio.
+
+<!-- -->
+
+-    La distancia a Neiva, como capital departamental, parece correlacionarse con ciertos niveles de pobreza, aunque se requieren estudios adicionales para establecer relaciones causales.
+
+## Recomendaciones
+
+-   Desarrollar políticas públicas territoriales que prioricen a los municipios más vulnerables y alejados del centro urbano.
+
+<!-- -->
+
+-    Fortalecer los sistemas de recolección y actualización de datos socioeconómicos a nivel municipal para una mejor toma de decisiones.
+
+<!-- -->
+
+-    Promover el uso de herramientas de análisis geoespacial en el diseño y monitoreo de programas sociales.
+
+<!-- -->
+
+-    Fomentar investigaciones interdisciplinares que analicen el vínculo entre ubicación geográfica, infraestructura y bienestar social.
+
+## Bibliografía / Cibergrafía
+
+-   DANE - Indicadores Regionales. <https://geoportal.dane.gov.co/geovisores/sociedad/indicadores-regionales/>
+
+<!-- -->
+
+-    DANE - Mapa de Indicadores. <https://geoportal.dane.gov.co/servicios/mapa-indicadores/>
+
+<!-- -->
+
+-    DANE - Datos Geoestadísticos. <https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/>

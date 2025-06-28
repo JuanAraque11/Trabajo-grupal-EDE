@@ -1,0 +1,32 @@
+{
+    "id": "5FEF95F6",
+    "path": "~/Descriptiva/Descrip/descrip.qmd",
+    "project_path": "descrip.qmd",
+    "type": "quarto_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1750951702211.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "rmdVisualMode": "true",
+        "rmdVisualWrapConfigured": "true",
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "152,0",
+        "scrollLine": "0",
+        "docOutlineVisible": "1",
+        "rmdVisualCollapsedChunks": "",
+        "rmdVisualModeLocation": "6260:3286.6669921875"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1751143606,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1751143606891,
+    "read_only": false,
+    "read_only_alternatives": []
+}

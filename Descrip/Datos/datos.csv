@@ -1,0 +1,39 @@
+COD_DEPTO,COD_MPIO,INDK_NOMBRE,INDK_VALOR,INDK_UND_MEDIDA,INDK_PERIODO,INDK_DESCRIPCION,ACTIVE,INDK_CODIGO,ORDEN,id
+41,00000,IPM-Indice de Pobreza Multidimensional,"11,9",%,2023,Indice de Pobreza Multidimensional,1,004,1,41-00000-004-0
+41,00000,NBI-Proporción de personas en NBI,"12,9",%,2018,NBI-Proporción de personas en NBI,1,005,2,41-00000-005-1
+41,00000,Tasa de Mortalidad Infantil,"16,6537312667395",Tasa x mil hab.,2020,Tasa de Mortalidad Infantil (Departamentos y Municipios,1,010,3,41-00000-010-2
+41,00000,Proyección de Población Cabecera Municipal,719024,Personas,2025,Proyección de Población Cabecera Municipal,1,002,,41-00000-002-3
+41,00000,Proyección de Población Centros Poblados y Rural Disperso,486294,Personas,2025,Proyección de Población Centros Poblados y Rural Disperso,1,003,,41-00000-003-4
+41,00000,Proyección de Población Total,1205318,Personas,2025,Proyección de Población Total,1,001,,41-00000-001-5
+41,00000,Tasa crecimiento exponencial x 100,"1,08818632758153",Tasa x 100,2025,Tasa crecimiento exponencial x 100,1,017,,41-00000-017-6
+41,00000,Diferencial por sexo_(e0),"4,86999999999999",,2025,Diferencial por sexo_(e0),1,027,,41-00000-027-7
+41,00000,Mujeres/Hombres_(TMI),"1,1920438957476",Tasa x mil hab.,2025,Mujeres/Hombres_(TMI),1,013,,41-00000-013-8
+41,00000,Tasa Global de Fecundidad,"2,05299358702144",Tasa x mil hab.,2025,Tasa Global de Fecundidad,1,018,,41-00000-018-9
+41,00000,Estimacion Defunciones,"7450,0",Personas,2025,Estimacion Defunciones,1,025,,41-00000-025-10
+41,00000,Tasa Bruta de Mortalidad (x mil hab.),"6,18",Tasa x mil hab.,2025,Tasa Bruta de Mortalidad (x mil hab.),1,011,,41-00000-011-11
+41,00000,Total Migración Internacional Neta (tasa x mil hab.),"0,79",Tasa x mil hab.,2025,Total Migración Internacional Neta (tasa x mil hab.),1,021,,41-00000-021-12
+41,00000,Esperanza_vida_al nacer,"76,83",Años,2025,Esperanza_vida_al nacer,1,022,,41-00000-022-13
+41,00000,Esperanza_vida al nacer_hombres,"74,45",Años,2025,Esperanza_vida al nacer_hombres,1,023,,41-00000-023-14
+41,00000,Tasa_mortalidad_infantil por mil hab.,"8,01",Tasa x mil hab.,2025,Tasa_mortalidad_infantil por mil hab.,1,012,,41-00000-012-15
+41,00000,Tasa_mortalidad_infantil_hombres por mil hab.,"8,69",Tasa x mil hab.,2025,Tasa_mortalidad_infantil_hombres por mil hab.,1,014,,41-00000-014-16
+41,00000,Tasa_mortalidad_infantil_mujeres por mil hab.,"7,29",Tasa x mil hab.,2025,Tasa_mortalidad_infantil_mujeres por mil hab.,1,015,,41-00000-015-17
+41,00000,Estimación Nacimientos,"19103,0",Personas,2025,Estimación Nacimientos,1,026,,41-00000-026-18
+41,00000,Tasa Bruta de Natalidad (x mil hab.),"15,85",Tasa x mil hab.,2025,Tasa Bruta de Natalidad (x mil hab.),1,016,,41-00000-016-19
+41,00000,Tasa_fecundidad_quinquenios,"2,0549",Tasa x mil hab.,2025,Tasa_fecundidad_quinquenios,1,020,,41-00000-020-20
+41,00000,Esperanza_vida al nacer_mujeres,"79,32",Años,2025,Esperanza_vida al nacer_mujeres,1,024,,41-00000-024-21
+41,00000,Tasa_fecundidad_edad simple,"2,053",Tasa x mil hab.,2025,Tasa_fecundidad_edad simple,1,019,,41-00000-019-22
+41,00000,Viviendas censadas CNPV2018,301651,Viviendas,2018,Viviendas censadas CNPV2018,1,101,,41-00000-101-23
+41,00000,Indice de dependencia 65 años y más CNPV2018,"50,94",Indice,2018,Indice de dependencia 65 años y más CNPV2018,1,105,,41-00000-105-24
+41,00000,Indice de envejecimiento 60 años y más CNPV2018,49,Indice,2018,Indice de envejecimiento 60 años y más CNPV2018,1,108,,41-00000-108-25
+41,00000,Indice de dependencia 60 años y más CNPV2018,"60,22",Indice,2018,Indice de dependencia 60 años y más CNPV2018,1,106,,41-00000-106-26
+41,00000,Hogares censados CNPV2018,319750,Hogares,2018,Hogares censados CNPV2018,1,102,,41-00000-102-27
+41,00000,Personas censadas CNPV2018,1009548,Personas,2018,Personas censadas CNPV2018,1,103,,41-00000-103-28
+41,00000,Indice de envejecimiento 65 años y más CNPV2018,"33,78",Indice,2018,Indice de envejecimiento 65 años y más CNPV2018,1,107,,41-00000-107-29
+41,00000,Densidad de población CNPV2018,"55,22",Población KM2,2018,Densidad de población CNPV2018,1,104,,41-00000-104-30
+41,00000,Indice de feminidad CNPV2018,"100,4",Indice,2018,Indice de feminidad CNPV2018,1,111,,41-00000-111-31
+41,00000,Personas por hogar CNPV2018,"3,16",Personas,2018,Personas por hogar CNPV2018,1,115,,41-00000-115-32
+41,00000,Personas menores de 14 años CNPV2018,",25",Personas,2018,Personas menores de 14 años CNPV2018,1,112,,41-00000-112-33
+41,00000,Indice de juventud CNPV2018,"26,36",Indice,2018,Indice de juventud CNPV2018,1,109,,41-00000-109-34
+41,00000,Personas entre 15 y 64 años CNPV2018,",66",Personas,2018,Personas entre 15 y 64 años CNPV2018,1,113,,41-00000-113-35
+41,00000,Indice de mascunilidad CNPV2018,"99,6",Indice,2018,Indice de mascunilidad CNPV2018,1,110,,41-00000-110-36
+41,00000,Personas mayores de 65 años CNPV2018,",08",Personas,2018,Personas mayores de 65 años CNPV2018,1,114,,41-00000-114-37
