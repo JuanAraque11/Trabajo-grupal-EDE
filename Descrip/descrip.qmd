@@ -5,6 +5,7 @@ author:
   - "Yeferson Aguilar - 1001687113"
 format:
   html:
+    self-contained: true
     toc: true              # Tabla de contenido útil para navegar el informe
     number-sections: true # Numera secciones (da estructura)
     theme: cosmo          # Tema visual agradable y limpio
@@ -19,27 +20,57 @@ knitr:
 
 ## Objetivos del trabajo
 
-El presente trabajo tiene como objetivo principal describir y visualizar los principales indicadores sociales del departamento del Huila (Colombia), empleando herramientas de análisis espacial y estadístico. Se busca identificar la distribución territorial del Índice de Pobreza Multidimensional (IPM), las Necesidades Básicas Insatisfechas (NBI), y la distancia geográfica de cada municipio respecto a la capital departamental, Neiva. Asimismo, se pretende fortalecer la comprensión de las desigualdades regionales a través de visualizaciones interactivas.
+El presente trabajo tiene como objetivo principal realizar un análisis exploratorio de indicadores sociales y fiscales en el departamento del Huila (Colombia).\
+Se busca caracterizar la situación de los municipios en cuanto a pobreza multidimensional, carencias básicas, desempeño fiscal y accesibilidad territorial.
+
+Específicamente, se pretende:
+
+-    Describir y visualizar los principales indicadores sociales del Huila: el Índice de Pobreza Multidimensional (IPM) y el porcentaje de población con Necesidades Básicas Insatisfechas (NBI).
+
+-    Analizar la relación entre la localización geográfica de los municipios y su nivel de desarrollo, utilizando como variable de referencia la distancia geográfica a Neiva, capital departamental.
+
+-    Evaluar el Índice de Desempeño Fiscal (IDF) para observar la capacidad administrativa y financiera de los municipios.
+
+-    Integrar los datos mencionados en un sistema geoespacial para facilitar la comprensión visual mediante mapas interactivos.
 
 ------------------------------------------------------------------------
 
 ## Introducción
 
-El análisis de indicadores sociales es una herramienta fundamental para comprender las condiciones de vida de la población y orientar decisiones en políticas públicas. Entre estos indicadores, el Índice de Pobreza Multidimensional (IPM) y las Necesidades Básicas Insatisfechas (NBI) permiten identificar carencias estructurales en aspectos clave como educación, salud, vivienda y servicios públicos.
+El análisis espacial de indicadores sociales y fiscales se ha convertido en una herramienta fundamental para comprender las desigualdades territoriales que persisten en Colombia. A través del uso de datos abiertos y herramientas geográficas, es posible identificar zonas con mayores niveles de vulnerabilidad, así como evaluar la capacidad de gestión local para responder a dichas condiciones.
 
-Este trabajo se centra en el departamento del Huila, una región del sur de Colombia que presenta contrastes importantes en su desarrollo social entre municipios. Mediante el uso de datos geográficos y estadísticas sociales, se busca explorar cómo varían estos indicadores dentro del departamento y qué patrones territoriales se evidencian. La elección del Huila responde tanto a su diversidad geográfica como a la disponibilidad de datos recientes que permiten realizar un análisis actualizado.
+Este estudio se centra en el departamento del Huila, una región ubicada en el suroccidente del país, que presenta una notable diversidad en sus condiciones sociales, económicas y administrativas. Mediante el uso de indicadores como el Índice de Pobreza Multidimensional (IPM), el porcentaje de población con Necesidades Básicas Insatisfechas (NBI), la distancia a Neiva y el Índice de Desempeño Fiscal (IDF), se pretende ofrecer una visión integral del territorio.
 
-El uso de mapas temáticos interactivos y técnicas de visualización facilita la interpretación de los resultados y permite generar conclusiones útiles para la planeación regional y la toma de decisiones.
+El propósito es proporcionar evidencia visual y cuantitativa que permita identificar patrones espaciales de desarrollo, rezago o eficiencia administrativa, apoyando futuras decisiones en política pública, planeación territorial y focalización de recursos.
 
 ------------------------------------------------------------------------
 
 ## Metodología
 
-Se empleó el lenguaje de programación R como entorno principal de análisis, utilizando paquetes especializados como `tidyverse`, `sf`, `tmap`, `readxl` y `janitor`.\
+El análisis se desarrolló mediante el software estadístico R, utilizando principalmente las librerías `tidyverse`, `sf`, `tmap`, `readxl`, `janitor` y `units`. Estas herramientas permitieron la manipulación de datos espaciales, la limpieza de bases de datos, el cálculo de distancias y la visualización interactiva de resultados.
 
-La información espacial fue tomada del shapefile oficial de municipios de Colombia, publicado por el DANE. Los datos estadísticos provinieron de archivos CSV con indicadores sociales a nivel municipal, correspondientes a los años 2018 (NBI) y 2021 (IPM).
+Los datos utilizados provienen de diversas fuentes oficiales:
 
-Enlace: <https://geoportal.dane.gov.co/geovisores/sociedad/indicadores-regionales/>
+-    **Límites administrativos**: shapefiles proporcionados por el DANE (2021) con la división político-administrativa del país.
+
+-    **Indicadores sociales**:
+
+    -    IPM municipal (2021), descargado del Geoportal DANE.
+
+    -    NBI (2018), también del Geoportal DANE.
+
+-    **Indicadores fiscales**:
+
+    -    Índice de Desempeño Fiscal (IDF) municipal (2023), extraído del portal del Departamento Nacional de Planeación (DNP).
+
+-    **Datos auxiliares**:
+
+    -    Coordenadas geográficas para cálculo de distancia entre cada municipio y la ciudad de Neiva.
+
+Se reproyectaron los datos al sistema de coordenadas EPSG:3116 para realizar cálculos precisos de distancia.\
+Cada base de datos fue filtrada para incluir únicamente los municipios del departamento del Huila. Posteriormente, se integraron mediante claves comunes (como los códigos DANE) para formar un único conjunto de datos espaciales.
+
+Finalmente, se construyeron mapas interactivos utilizando la librería `tmap` en su modo `view`, permitiendo una visualización dinámica y accesible de los indicadores en todo el territorio departamental.
 
 ------------------------------------------------------------------------
 
@@ -53,11 +84,55 @@ El procedimiento realizado se puede resumir en las siguientes etapas:
 4.  **Cálculo de distancias geográficas** desde cada municipio hasta Neiva, utilizando proyecciones espaciales precisas.
 5.  **Visualización de los datos** mediante mapas temáticos interactivos, con énfasis en la comparación territorial.
 
+### Procedimiento -  IPM (Índice de Pobreza Multidimensional)
+
+1.   Se leyó la base de datos del IPM 2021 por municipio.
+
+2.   Se integró con el shapefile espacial del departamento del Huila.
+
+3.   Se generó un mapa interactivo para visualizar la distribución del IPM.
+
+### Procedimiento - NBI (Necesidades Básicas Insatisfechas)
+
+1.   Se leyó la base de datos del NBI 2018 por municipio.
+
+2.   Se hizo limpieza y armonización de los nombres de municipios.
+
+3.   Se integró con la geometría espacial de los municipios del Huila.
+
+4.   Se visualizó en un mapa para analizar su distribución geográfica.
+
+### Procedimiento - IDF (Indice de Desempeño Fiscal) 
+
+1.   Se leyó el archivo Excel entregado por el DNP.
+
+2.   Se seleccionó la hoja "Municipios 2023".
+
+3.  Se identificaron las columnas correspondientes al departamento, municipio, código y valor del IDF.
+
+4.   Se filtraron solo los registros del departamento del Huila.
+
+5.   Se integró esta información con el shapefile espacial previamente filtrado.
+
+6.   Se generó un mapa interactivo con la distribución del IDF.
+
+### Procedimiento -  Distancia a Neiva
+
+1.   Se calcularon los centroides de los municipios del Huila a partir del shapefile.
+
+2.   Se extrajo el centroide de Neiva como punto de referencia.
+
+3.   Se calculó la distancia geográfica en kilómetros desde cada municipio hacia Neiva.
+
+4.   Se incorporó esta distancia como una variable nueva en la tabla espacial.
+
+5.   Se generó un mapa interactivo para visualizar la cercanía de cada municipio a la capital.
+
 ------------------------------------------------------------------------
 
 ## Análisis exploratorio de los resultados
 
-### Índice de Pobreza Multidimensional (IPM) 
+### Índice de Pobreza Multidimensional (IPM)
 
 La visualización del Índice de Pobreza Multidimensional (IPM) en los municipios del Huila permite identificar zonas con mayores niveles de privación. El IPM combina múltiples dimensiones del bienestar —como salud, educación, vivienda y trabajo— para ofrecer una medida más integral de la pobreza.
 
@@ -146,9 +221,9 @@ tm_shape(huila_ipm) +
 
 ```
 
-----------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
-----------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 ### El Índice de Necesidades Básicas Insatisfechas (NBI)
 
@@ -215,9 +290,56 @@ tm_shape(huila_nbi) +
 
 ```
 
------------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
------------------------------------------------------------------------------------
+### Indice de Desempeño Fiscal (IDF)
+
+El Índice de Desempeño Fiscal (IDF) es una herramienta del Departamento Nacional de Planeación (DNP) que permite evaluar la gestión financiera de las entidades territoriales en Colombia. Este índice analiza aspectos como la eficiencia administrativa, la capacidad de generación de recursos propios y el cumplimiento de metas fiscales.
+
+En este trabajo se utilizó el archivo publicado por el DNP con los resultados de 2023, extrayendo únicamente los municipios del departamento del Huila.
+
+### Mapa
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# ─── Leer datos del IDF 2023 ────────────────────────────────────────────────
+idf_data_raw <- read_excel(
+  path = "Datos/ResultadosIDF.xlsx",
+  sheet = "Municipios 2023",
+  skip = 8
+)
+
+# ─── Renombrar columnas y seleccionar necesarias ───────────────────────────
+idf_data <- idf_data_raw %>%
+  rename(
+    cod_municipio = 1,        # Código DANE del municipio
+    departamento = 2,         # Nombre del departamento
+    municipio = 3,            # Nombre del municipio
+    idf_2023 = 17             # Índice de desempeño fiscal (posición puede variar)
+  ) %>%
+  select(cod_municipio, departamento, municipio, idf_2023) %>%
+  filter(departamento == "HUILA") %>%
+  mutate(
+    cod_municipio = str_pad(as.character(cod_municipio), 5, pad = "0"),
+    idf_2023 = as.numeric(idf_2023)
+  )
+
+# ─── Unir datos del IDF con shapefile del Huila ────────────────────────────
+huila_idf <- left_join(huila, idf_data, by = "cod_municipio")
+
+# ─── Mapa interactivo del IDF ──────────────────────────────────────────────
+tmap_mode("view")
+
+tm_shape(huila_idf) +
+  tm_polygons(
+    col = "idf_2023",
+    palette = "Greens",
+    id = "MPIO_CNMBR",
+    popup.vars = c("Municipio" = "municipio", "IDF 2023" = "idf_2023")
+  ) +
+  tm_view(set.view = c(-75.6, 2.6, 8))
+
+```
 
 ### Distancia geográfica a Neiva
 
@@ -279,46 +401,58 @@ El análisis evidencia que los municipios más alejados del centro urbano princi
 
 Los resultados también sugieren que, aunque el IPM y el NBI comparten tendencias espaciales, cada indicador captura dimensiones distintas de la pobreza, lo que refuerza la importancia de utilizarlos de manera complementaria.
 
+### Interpretación: IPM
+
+El mapa del IPM muestra una distribución desigual de la pobreza multidimensional en los municipios del Huila. Se observa que los municipios del sur y occidente del departamento tienden a tener valores más altos del índice, lo cual indica mayores niveles de privación. En cambio, Neiva y otros municipios del centro presentan valores más bajos, lo que refleja mejores condiciones de vida.
+
+### Interpretación: NBI
+
+Los resultados del NBI también revelan una concentración de necesidades básicas insatisfechas en ciertas zonas rurales del departamento. Algunos municipios presentan porcentajes superiores al 30%, lo cual puede estar asociado con carencias en servicios públicos, vivienda digna o acceso a educación. Nuevamente, Neiva aparece con los mejores indicadores, lo que resalta su rol como centro urbano y administrativo.
+
+### Interpretación: Distancias a Neiva
+
+Al analizar las distancias a Neiva, se evidencia que varios municipios están significativamente alejados de la capital departamental. Esta lejanía puede representar un obstáculo en el acceso a servicios administrativos, salud y educación. Aquellos municipios con mayores distancias también tienden a coincidir con los que presentan mayores niveles de pobreza, lo que sugiere una posible relación entre localización geográfica y desarrollo.
+
+### Interpretación: IDF
+
+El análisis del Índice de Desempeño Fiscal (IDF) permite observar cómo se desempeñan los municipios del Huila en términos de gestión fiscal. Se evidencia que Neiva, como capital departamental, presenta uno de los puntajes más altos, reflejando una gestión eficiente de sus recursos. Por otro lado, varios municipios rurales muestran desempeños moderados o bajos, lo cual puede deberse a limitaciones en sus ingresos propios, baja ejecución presupuestal o dependencia de transferencias. Este indicador es clave para identificar zonas que podrían requerir asistencia técnica o reformas administrativas.
+
 ## Conclusiones
 
--   El análisis geoespacial de indicadores sociales como el IPM y el NBI en el departamento del Huila permite identificar patrones territoriales de pobreza y desigualdad.
+-   El departamento del Huila presenta una notable heterogeneidad en sus indicadores sociales y fiscales.
+-   El **Índice de Pobreza Multidimensional (IPM)** muestra que algunos municipios aún enfrentan grandes desafíos estructurales en acceso a servicios y calidad de vida.
 
 <!-- -->
 
--    Municipios periféricos tienden a presentar mayores niveles de privación, lo que sugiere desigualdades en la distribución de servicios y oportunidades.
+-    El **Necesidades Básicas Insatisfechas (NBI)** complementa esta lectura, mostrando un patrón de pobreza más visible en zonas rurales.
 
 <!-- -->
 
--    El uso combinado de datos estadísticos y mapas interactivos facilita una mejor comprensión de la realidad social del territorio.
+-    El análisis de distancias evidencia que la centralidad de Neiva influye en la accesibilidad a servicios y recursos del resto del territorio.
 
 <!-- -->
 
--    La distancia a Neiva, como capital departamental, parece correlacionarse con ciertos niveles de pobreza, aunque se requieren estudios adicionales para establecer relaciones causales.
+-    En cuanto al **Índice de Desempeño Fiscal (IDF)**, Neiva se posiciona como el municipio con mejor gestión fiscal, mientras que otros presentan niveles bajos, lo que evidencia desigualdad administrativa y financiera en el departamento.
 
 ## Recomendaciones
 
--   Desarrollar políticas públicas territoriales que prioricen a los municipios más vulnerables y alejados del centro urbano.
+-   Fortalecer las políticas sociales en municipios con mayores niveles de pobreza según el IPM y NBI.
 
 <!-- -->
 
--    Fortalecer los sistemas de recolección y actualización de datos socioeconómicos a nivel municipal para una mejor toma de decisiones.
+-    Promover estrategias de desarrollo regional que reduzcan la dependencia hacia Neiva, descentralizando servicios.
 
 <!-- -->
 
--    Promover el uso de herramientas de análisis geoespacial en el diseño y monitoreo de programas sociales.
+-    Brindar asistencia técnica a los municipios con bajo IDF para mejorar sus capacidades de planeación, ejecución y recaudo.
 
 <!-- -->
 
--    Fomentar investigaciones interdisciplinares que analicen el vínculo entre ubicación geográfica, infraestructura y bienestar social.
+-    Mantener y ampliar el uso de herramientas geoespaciales en la formulación de políticas públicas, ya que permiten identificar desigualdades territoriales de forma precisa.
 
 ## Bibliografía / Cibergrafía
 
 -   DANE - Indicadores Regionales. <https://geoportal.dane.gov.co/geovisores/sociedad/indicadores-regionales/>
-
-<!-- -->
-
--    DANE - Mapa de Indicadores. <https://geoportal.dane.gov.co/servicios/mapa-indicadores/>
-
-<!-- -->
-
--    DANE - Datos Geoestadísticos. <https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/>
+-   DANE - Mapa de Indicadores. <https://geoportal.dane.gov.co/servicios/mapa-indicadores/>
+-   DANE - Datos Geoestadísticos. <https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/>
+-   DNP - Información fiscal y financiera. <https://www.dnp.gov.co/LaEntidad_/subdireccion-general-descentralizacion-desarrollo-territorial/direccion-descentralizacion-fortalecimiento-fiscal/Paginas/informacion-fiscal-y-financiera.aspx>
