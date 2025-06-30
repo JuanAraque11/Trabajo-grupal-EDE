@@ -78,11 +78,11 @@ Finalmente, se construyeron mapas interactivos utilizando la librería `tmap` en
 
 El procedimiento realizado se puede resumir en las siguientes etapas:
 
-1.  **Carga y procesamiento** de los archivos espaciales (`.shp`) con los límites municipales de Colombia.
-2.  **Filtrado del departamento del Huila** y transformación de los datos para facilitar su análisis.
-3.  **Integración de datos socioeconómicos**, emparejando los códigos municipales con los registros de IPM y NBI.
-4.  **Cálculo de distancias geográficas** desde cada municipio hasta Neiva, utilizando proyecciones espaciales precisas.
-5.  **Visualización de los datos** mediante mapas temáticos interactivos, con énfasis en la comparación territorial.
+1.  Carga y procesamiento de los archivos espaciales (`.shp`) con los límites municipales de Colombia.
+2.  Filtrado del departamento del Huila y transformación de los datos para facilitar su análisis.
+3.  Integración de datos socioeconómicos, emparejando los códigos municipales con los registros de IPM y NBI.
+4.  Cálculo de distancias geográficas desde cada municipio hasta Neiva, utilizando proyecciones espaciales precisas.
+5.  Visualización de los datos mediante mapas temáticos interactivos, con énfasis en la comparación territorial.
 
 ### Procedimiento -  IPM (Índice de Pobreza Multidimensional)
 
@@ -221,6 +221,14 @@ tm_shape(huila_ipm) +
 
 ```
 
+El IPM es un indicador compuesto que mide múltiples carencias que afectan simultáneamente a los hogares (educación, salud, trabajo, vivienda y servicios).
+
+-    Su valor oscila entre 0 y 100, donde valores más altos indican mayor pobreza.
+
+-    Un municipio con IPM cercano a 0 tiene baja pobreza multidimensional.
+
+-    Por encima de 30 o 40 se consideran niveles preocupantes, dependiendo del contexto regional.
+
 ------------------------------------------------------------------------
 
 ------------------------------------------------------------------------
@@ -290,6 +298,14 @@ tm_shape(huila_nbi) +
 
 ```
 
+El NBI representa el porcentaje de personas en condiciones de pobreza estructural, basándose en variables como acceso a vivienda adecuada, servicios públicos, educación y hacinamiento.
+
+-    Se expresa como un porcentaje (%).
+
+-    Un NBI mayor al 30% indica alta privación, especialmente en zonas rurales.
+
+-    Valores bajos (menos del 10%) suelen observarse en zonas urbanas o desarrolladas.
+
 ------------------------------------------------------------------------
 
 ### Indice de Desempeño Fiscal (IDF)
@@ -340,6 +356,14 @@ tm_shape(huila_idf) +
   tm_view(set.view = c(-75.6, 2.6, 8))
 
 ```
+
+El IDF evalúa la capacidad administrativa y financiera de los gobiernos locales, según criterios como gestión de ingresos, eficiencia del gasto, endeudamiento y sostenibilidad.
+
+-    El puntaje va de 0 a 100.
+
+-    Un mayor valor indica mejor desempeño fiscal.
+
+-    Valores por encima de 80 reflejan buena gestión; por debajo de 50 indican riesgo o debilidades fiscales.
 
 ### Distancia geográfica a Neiva
 
@@ -395,6 +419,12 @@ tm_shape(huila_dist) +
 
 ```
 
+Se refiere a la distancia geográfica (en kilómetros) desde cada municipio hacia la ciudad de Neiva, capital departamental.
+
+-    No implica calidad o pobreza directamente, pero se explora como posible factor que influye en el acceso a servicios, recursos o conectividad.
+
+-    Municipios más alejados tienden a tener peores indicadores sociale**s**, aunque esto no siempre es lineal.
+
 ## Interpretación de los resultados
 
 El análisis evidencia que los municipios más alejados del centro urbano principal (Neiva) presentan, en general, mayores niveles de pobreza y necesidades insatisfechas. Esto podría estar relacionado con barreras en el acceso a servicios básicos, educación, empleo formal y sistemas de salud.
@@ -420,11 +450,11 @@ El análisis del Índice de Desempeño Fiscal (IDF) permite observar cómo se de
 ## Conclusiones
 
 -   El departamento del Huila presenta una notable heterogeneidad en sus indicadores sociales y fiscales.
--   El **Índice de Pobreza Multidimensional (IPM)** muestra que algunos municipios aún enfrentan grandes desafíos estructurales en acceso a servicios y calidad de vida.
+-   El Índice de Pobreza Multidimensional (IPM) muestra que algunos municipios aún enfrentan grandes desafíos estructurales en acceso a servicios y calidad de vida.
 
 <!-- -->
 
--    El **Necesidades Básicas Insatisfechas (NBI)** complementa esta lectura, mostrando un patrón de pobreza más visible en zonas rurales.
+-    El Necesidades Básicas Insatisfechas (NBI) complementa esta lectura, mostrando un patrón de pobreza más visible en zonas rurales.
 
 <!-- -->
 
@@ -432,7 +462,7 @@ El análisis del Índice de Desempeño Fiscal (IDF) permite observar cómo se de
 
 <!-- -->
 
--    En cuanto al **Índice de Desempeño Fiscal (IDF)**, Neiva se posiciona como el municipio con mejor gestión fiscal, mientras que otros presentan niveles bajos, lo que evidencia desigualdad administrativa y financiera en el departamento.
+-    En cuanto al Índice de Desempeño Fiscal (IDF), Neiva se posiciona como el municipio con mejor gestión fiscal, mientras que otros presentan niveles bajos, lo que evidencia desigualdad administrativa y financiera en el departamento.
 
 ## Recomendaciones
 
