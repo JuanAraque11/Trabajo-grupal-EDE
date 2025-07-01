@@ -25,13 +25,13 @@ Se busca caracterizar la situación de los municipios en cuanto a pobreza multid
 
 Específicamente, se pretende:
 
--    Describir y visualizar los principales indicadores sociales del Huila: el Índice de Pobreza Multidimensional (IPM) y el porcentaje de población con Necesidades Básicas Insatisfechas (NBI).
+-   Describir y visualizar los principales indicadores sociales del Huila: el Índice de Pobreza Multidimensional (IPM) y el porcentaje de población con Necesidades Básicas Insatisfechas (NBI).
 
--    Analizar la relación entre la localización geográfica de los municipios y su nivel de desarrollo, utilizando como variable de referencia la distancia geográfica a Neiva, capital departamental.
+-   Analizar la relación entre la localización geográfica de los municipios y su nivel de desarrollo, utilizando como variable de referencia la distancia geográfica a Neiva, capital departamental.
 
--    Evaluar el Índice de Desempeño Fiscal (IDF) para observar la capacidad administrativa y financiera de los municipios.
+-   Evaluar el Índice de Desempeño Fiscal (IDF) para observar la capacidad administrativa y financiera de los municipios.
 
--    Integrar los datos mencionados en un sistema geoespacial para facilitar la comprensión visual mediante mapas interactivos.
+-   Integrar los datos mencionados en un sistema geoespacial para facilitar la comprensión visual mediante mapas interactivos.
 
 ------------------------------------------------------------------------
 
@@ -51,21 +51,27 @@ El análisis se desarrolló mediante el software estadístico R, utilizando prin
 
 Los datos utilizados provienen de diversas fuentes oficiales:
 
--    **Límites administrativos**: shapefiles proporcionados por el DANE (2021) con la división político-administrativa del país.
+-   **Límites administrativos**: shapefiles proporcionados por el DANE (2021) con la división político-administrativa del país.
 
--    **Indicadores sociales**:
+-   **Indicadores sociales**:
 
-    -    IPM municipal (2021), descargado del Geoportal DANE.
+```         
+-    IPM municipal (2021), descargado del Geoportal DANE.
 
-    -    NBI (2018), también del Geoportal DANE.
+-    NBI (2018), también del Geoportal DANE.
+```
 
--    **Indicadores fiscales**:
+-   **Indicadores fiscales**:
 
-    -    Índice de Desempeño Fiscal (IDF) municipal (2023), extraído del portal del Departamento Nacional de Planeación (DNP).
+```         
+-    Índice de Desempeño Fiscal (IDF) municipal (2023), extraído del portal del Departamento Nacional de Planeación (DNP).
+```
 
--    **Datos auxiliares**:
+-   **Datos auxiliares**:
 
-    -    Coordenadas geográficas para cálculo de distancia entre cada municipio y la ciudad de Neiva.
+```         
+-    Coordenadas geográficas para cálculo de distancia entre cada municipio y la ciudad de Neiva.
+```
 
 Se reproyectaron los datos al sistema de coordenadas EPSG:3116 para realizar cálculos precisos de distancia.\
 Cada base de datos fue filtrada para incluir únicamente los municipios del departamento del Huila. Posteriormente, se integraron mediante claves comunes (como los códigos DANE) para formar un único conjunto de datos espaciales.
@@ -84,49 +90,49 @@ El procedimiento realizado se puede resumir en las siguientes etapas:
 4.  Cálculo de distancias geográficas desde cada municipio hasta Neiva, utilizando proyecciones espaciales precisas.
 5.  Visualización de los datos mediante mapas temáticos interactivos, con énfasis en la comparación territorial.
 
-### Procedimiento -  IPM (Índice de Pobreza Multidimensional)
+### Procedimiento - IPM (Índice de Pobreza Multidimensional)
 
-1.   Se leyó la base de datos del IPM 2021 por municipio.
+1.  Se leyó la base de datos del IPM 2021 por municipio.
 
-2.   Se integró con el shapefile espacial del departamento del Huila.
+2.  Se integró con el shapefile espacial del departamento del Huila.
 
-3.   Se generó un mapa interactivo para visualizar la distribución del IPM.
+3.  Se generó un mapa interactivo para visualizar la distribución del IPM.
 
 ### Procedimiento - NBI (Necesidades Básicas Insatisfechas)
 
-1.   Se leyó la base de datos del NBI 2018 por municipio.
+1.  Se leyó la base de datos del NBI 2018 por municipio.
 
-2.   Se hizo limpieza y armonización de los nombres de municipios.
+2.  Se hizo limpieza y armonización de los nombres de municipios.
 
-3.   Se integró con la geometría espacial de los municipios del Huila.
+3.  Se integró con la geometría espacial de los municipios del Huila.
 
-4.   Se visualizó en un mapa para analizar su distribución geográfica.
+4.  Se visualizó en un mapa para analizar su distribución geográfica.
 
-### Procedimiento - IDF (Indice de Desempeño Fiscal) 
+### Procedimiento - IDF (Indice de Desempeño Fiscal)
 
-1.   Se leyó el archivo Excel entregado por el DNP.
+1.  Se leyó el archivo Excel entregado por el DNP.
 
-2.   Se seleccionó la hoja "Municipios 2023".
+2.  Se seleccionó la hoja "Municipios 2023".
 
 3.  Se identificaron las columnas correspondientes al departamento, municipio, código y valor del IDF.
 
-4.   Se filtraron solo los registros del departamento del Huila.
+4.  Se filtraron solo los registros del departamento del Huila.
 
-5.   Se integró esta información con el shapefile espacial previamente filtrado.
+5.  Se integró esta información con el shapefile espacial previamente filtrado.
 
-6.   Se generó un mapa interactivo con la distribución del IDF.
+6.  Se generó un mapa interactivo con la distribución del IDF.
 
-### Procedimiento -  Distancia a Neiva
+### Procedimiento - Distancia a Neiva
 
-1.   Se calcularon los centroides de los municipios del Huila a partir del shapefile.
+1.  Se calcularon los centroides de los municipios del Huila a partir del shapefile.
 
-2.   Se extrajo el centroide de Neiva como punto de referencia.
+2.  Se extrajo el centroide de Neiva como punto de referencia.
 
-3.   Se calculó la distancia geográfica en kilómetros desde cada municipio hacia Neiva.
+3.  Se calculó la distancia geográfica en kilómetros desde cada municipio hacia Neiva.
 
-4.   Se incorporó esta distancia como una variable nueva en la tabla espacial.
+4.  Se incorporó esta distancia como una variable nueva en la tabla espacial.
 
-5.   Se generó un mapa interactivo para visualizar la cercanía de cada municipio a la capital.
+5.  Se generó un mapa interactivo para visualizar la cercanía de cada municipio a la capital.
 
 ------------------------------------------------------------------------
 
@@ -223,11 +229,11 @@ tm_shape(huila_ipm) +
 
 El IPM es un indicador compuesto que mide múltiples carencias que afectan simultáneamente a los hogares (educación, salud, trabajo, vivienda y servicios).
 
--    Su valor oscila entre 0 y 100, donde valores más altos indican mayor pobreza.
+-   Su valor oscila entre 0 y 100, donde valores más altos indican mayor pobreza.
 
--    Un municipio con IPM cercano a 0 tiene baja pobreza multidimensional.
+-   Un municipio con IPM cercano a 0 tiene baja pobreza multidimensional.
 
--    Por encima de 30 o 40 se consideran niveles preocupantes, dependiendo del contexto regional.
+-   Por encima de 30 o 40 se consideran niveles preocupantes, dependiendo del contexto regional.
 
 ------------------------------------------------------------------------
 
@@ -300,11 +306,11 @@ tm_shape(huila_nbi) +
 
 El NBI representa el porcentaje de personas en condiciones de pobreza estructural, basándose en variables como acceso a vivienda adecuada, servicios públicos, educación y hacinamiento.
 
--    Se expresa como un porcentaje (%).
+-   Se expresa como un porcentaje (%).
 
--    Un NBI mayor al 30% indica alta privación, especialmente en zonas rurales.
+-   Un NBI mayor al 30% indica alta privación, especialmente en zonas rurales.
 
--    Valores bajos (menos del 10%) suelen observarse en zonas urbanas o desarrolladas.
+-   Valores bajos (menos del 10%) suelen observarse en zonas urbanas o desarrolladas.
 
 ------------------------------------------------------------------------
 
@@ -359,11 +365,11 @@ tm_shape(huila_idf) +
 
 El IDF evalúa la capacidad administrativa y financiera de los gobiernos locales, según criterios como gestión de ingresos, eficiencia del gasto, endeudamiento y sostenibilidad.
 
--    El puntaje va de 0 a 100.
+-   El puntaje va de 0 a 100.
 
--    Un mayor valor indica mejor desempeño fiscal.
+-   Un mayor valor indica mejor desempeño fiscal.
 
--    Valores por encima de 80 reflejan buena gestión; por debajo de 50 indican riesgo o debilidades fiscales.
+-   Valores por encima de 80 reflejan buena gestión; por debajo de 50 indican riesgo o debilidades fiscales.
 
 ### Distancia geográfica a Neiva
 
@@ -421,9 +427,9 @@ tm_shape(huila_dist) +
 
 Se refiere a la distancia geográfica (en kilómetros) desde cada municipio hacia la ciudad de Neiva, capital departamental.
 
--    No implica calidad o pobreza directamente, pero se explora como posible factor que influye en el acceso a servicios, recursos o conectividad.
+-   No implica calidad o pobreza directamente, pero se explora como posible factor que influye en el acceso a servicios, recursos o conectividad.
 
--    Municipios más alejados tienden a tener peores indicadores sociale**s**, aunque esto no siempre es lineal.
+-   Municipios más alejados tienden a tener peores indicadores sociale**s**, aunque esto no siempre es lineal.
 
 ## Interpretación de los resultados
 
@@ -454,15 +460,15 @@ El análisis del Índice de Desempeño Fiscal (IDF) permite observar cómo se de
 
 <!-- -->
 
--    El Necesidades Básicas Insatisfechas (NBI) complementa esta lectura, mostrando un patrón de pobreza más visible en zonas rurales.
+-   El Necesidades Básicas Insatisfechas (NBI) complementa esta lectura, mostrando un patrón de pobreza más visible en zonas rurales.
 
 <!-- -->
 
--    El análisis de distancias evidencia que la centralidad de Neiva influye en la accesibilidad a servicios y recursos del resto del territorio.
+-   El análisis de distancias evidencia que la centralidad de Neiva influye en la accesibilidad a servicios y recursos del resto del territorio.
 
 <!-- -->
 
--    En cuanto al Índice de Desempeño Fiscal (IDF), Neiva se posiciona como el municipio con mejor gestión fiscal, mientras que otros presentan niveles bajos, lo que evidencia desigualdad administrativa y financiera en el departamento.
+-   En cuanto al Índice de Desempeño Fiscal (IDF), Neiva se posiciona como el municipio con mejor gestión fiscal, mientras que otros presentan niveles bajos, lo que evidencia desigualdad administrativa y financiera en el departamento.
 
 ## Recomendaciones
 
@@ -470,15 +476,15 @@ El análisis del Índice de Desempeño Fiscal (IDF) permite observar cómo se de
 
 <!-- -->
 
--    Promover estrategias de desarrollo regional que reduzcan la dependencia hacia Neiva, descentralizando servicios.
+-   Promover estrategias de desarrollo regional que reduzcan la dependencia hacia Neiva, descentralizando servicios.
 
 <!-- -->
 
--    Brindar asistencia técnica a los municipios con bajo IDF para mejorar sus capacidades de planeación, ejecución y recaudo.
+-   Brindar asistencia técnica a los municipios con bajo IDF para mejorar sus capacidades de planeación, ejecución y recaudo.
 
 <!-- -->
 
--    Mantener y ampliar el uso de herramientas geoespaciales en la formulación de políticas públicas, ya que permiten identificar desigualdades territoriales de forma precisa.
+-   Mantener y ampliar el uso de herramientas geoespaciales en la formulación de políticas públicas, ya que permiten identificar desigualdades territoriales de forma precisa.
 
 ## Bibliografía / Cibergrafía
 
